@@ -1,0 +1,29 @@
+version: '3'
+services:
+  discord_bot:
+    container_name: discord_bot
+    build: .
+    environment:
+      - TOKEN=
+      - OWNER_ID=
+    networks:
+      default:
+      database:
+        ipv4_address: 10.10.1.7
+    user: root
+    volumes:
+      - .:/src
+    command: sh -c "python3.10 bot.py"
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "10"
+        max-size: "10m"
+
+networks:
+  database:
+    external:
+      name: database
+  default:
+    driver: bridge
